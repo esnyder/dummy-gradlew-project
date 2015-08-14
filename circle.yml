@@ -1,0 +1,21 @@
+#test:
+#  pre:
+#    - echo n | android create avd --force -n test --abi armeabi-v7a -t "android-21"
+#    #- emulator -avd test -no-skin -no-audio -no-window -no-boot-anim -verbose: 
+test:
+  pre:
+    - android list avd
+    - android list device
+    - emulator -avd circleci-android22 -no-audio -no-window -verbose: 
+        background: true
+        parallel: true
+    - android list device
+    - circle-android wait-for-boot
+  override:
+    - android list device
+    - adb logcat:
+        background: true
+        parallel: true
+    - cat $CIRCLE_ARTIFACTS/*
+    - ./gradlew clean installStagingDebug app:connectedAndroidTestStagingDebug: 
+        timeout: 300
