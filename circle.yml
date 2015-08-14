@@ -17,5 +17,5 @@ test:
         background: true
         parallel: true
     - cat $CIRCLE_ARTIFACTS/*
-    - ./gradlew clean installStagingDebug app:connectedAndroidTestStagingDebug: 
-        timeout: 300
+    - ./gradlew connectedAndroidTest: 
+        timeout: 1200
